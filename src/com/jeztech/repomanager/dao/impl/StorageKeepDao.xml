@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.StorageKeepDao">
+
+    <insert id="addItem" parameterType="StorageInfo" useGeneratedKeys="true" keyProperty="sid">
+    <![CDATA[ 
+        INSERT INTO 
+        tbl_storage_keep (storage_sn, apple_type, apple_size, repo_code, repo_sep,
+        goods_count, total_price, operate_time) 
+        VALUES (#{storageSn}, #{appleType}, #{appleSize}, #{repoCode}, #{repoSep},
+        #{goodsCount}, #{totalPrice}, #{operateTime}
+        )
+    ]]>
+    </insert>
+
+    <update id="deleteItem" parameterType="StorageInfo">
+    <![CDATA[ 
+        UPDATE tbl_storage_keep
+        SET
+           status = 0
+        WHERE id = #{sid}
+    ]]>
+    </update>
+
+    <update id="modifyItem" parameterType="StorageInfo">
+        UPDATE tbl_storage_keep
+        SET
+        goods_count = #{goodsCount},
+        total_price = #{totalPrice}
+        WHERE id = #{sid}
+    </update>
+
+    <select id="getItemByKey" parameterType="StorageInfo" resultType="StorageInfo">
+        SELECT
+        id as sid,
+        sk.storage_sn as storageSn,
+        apple_type as appleType,
+        apple_size as appleSize,
+        repo_code as repoCode,
+        repo_sep as repoSep,
+        goods_count as goodsCount,
+        fi.unit_price as unitPrice,
+        total_price as totalPrice,
+        operate_time as operateTime
+
+        FROM tbl_storage_keep sk
+        LEFT JOIN dic_apple_size aps ON(aps.name = sk.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sk.apple_type)
+        LEFT JOIN
+        tbl_farmer_info fi ON(fi.storage_sn = sk.storage_sn)
+        WHERE 1 = 1
+        <if test="storageSn != null and storageSn != ''">
+            AND sk.storage_sn = #{storageSn}
+        </if>
+        <if test="appleType != null and appleType != ''">
+            AND apple_type = #{appleType}
+        </if>
+        <if test="appleSize != null and appleSize != ''">
+            AND apple_size = #{appleSize}
+        </if>
+        <if test="repoCode != null and repoCode != ''">
+            AND repo_code = #{repoCode}
+        </if>
+        <if test="repoSep != null and repoSep != 0">
+            AND repo_sep = #{repoSep}
+        </if>
+
+    </select>
+
+    <select id="getItemById" parameterType="StorageInfo" resultType="StorageInfo">
+        SELECT
+        id as sid,
+        sk.storage_sn as storageSn,
+        apple_type as appleType,
+        apple_size as appleSize,
+        repo_code as repoCode,
+        repo_sep as repoSep,
+        goods_count as goodsCount,
+        fi.unit_price as unitPrice,
+        total_price as totalPrice,
+        operate_time as operateTime
+
+        FROM tbl_storage_keep sk
+        LEFT JOIN dic_apple_size aps ON(aps.name = sk.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sk.apple_type)
+        LEFT JOIN
+        tbl_farmer_info fi ON(fi.storage_sn = sk.storage_sn)
+        WHERE id = #{sid}
+    </select>
+
+    <sql id="queryCond">
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND sk.storage_sn = #{cond.storageSn}
+        </if>
+        <if test="cond.appleType != null and cond.appleType != ''">
+            AND apple_type = #{cond.appleType}
+        </if>
+        <if test="cond.appleSize != null and cond.appleSize != ''">
+            AND apple_size = #{cond.appleSize}
+        </if>
+        <if test="cond.repoCode != null and cond.repoCode != ''">
+            AND repo_code = #{cond.repoCode}
+        </if>
+        <if test="cond.repoSep != null and cond.repoSep != 0">
+            AND repo_sep = #{cond.repoSep}
+        </if>
+    </sql>
+
+    <select id="getAllItemCount" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM tbl_storage_keep sk
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = sk.storage_sn)
+        WHERE goods_count != 0
+        <include refid="queryCond" />
+
+    </select>
+
+    <select id="getAllItem" parameterType="map" resultType="StorageInfo">
+        SELECT
+        id as sid,
+        farmer_name as farmerName,
+        sk.storage_sn as storageSn,
+        apt.value as appleType,
+        aps.value as appleSize,
+        repo_code as repoCode,
+        goods_count as goodsCount,
+        unit_price as unitPrice,
+        total_price as totalPrice,
+        operate_time as operateTime,
+        repo_sep as repoSep
+        FROM
+        tbl_storage_keep sk
+        LEFT JOIN dic_apple_size aps ON(aps.name = sk.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sk.apple_type)
+        LEFT JOIN
+        tbl_farmer_info fi ON(fi.storage_sn = sk.storage_sn)
+        WHERE goods_count != 0
+        <include refid="queryCond" />
+        ORDER BY sk.storage_sn DESC
+        LIMIT #{start_row}, #{rows}
+    </select>
+
+    <select id="getAllItems" parameterType="map" resultType="StorageInfo">
+        SELECT
+        id as sid,
+        farmer_name as farmerName,
+        sk.storage_sn as storageSn,
+        apt.value as appleType,
+        aps.value as appleSize,
+        repo_code as repoCode,
+        goods_count as goodsCount,
+        unit_price as unitPrice,
+        total_price as totalPrice,
+        operate_time as operateTime,
+        repo_sep as repoSep
+        FROM
+        tbl_storage_keep sk
+        LEFT JOIN dic_apple_size aps ON(aps.name = sk.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sk.apple_type)
+        LEFT JOIN
+        tbl_farmer_info fi ON(fi.storage_sn = sk.storage_sn)
+        WHERE goods_count != 0
+        <include refid="queryCond" />
+        ORDER BY sk.storage_sn DESC
+    </select>
+
+    <select id="getAllKeepGoodsCount" parameterType="map" resultType="Integer">
+        SELECT
+        sum(goods_count) as goodsCount
+        FROM
+        tbl_storage_keep sk
+        LEFT JOIN dic_apple_size aps ON(aps.name = sk.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sk.apple_type)
+        LEFT
+        JOIN tbl_farmer_info fi ON(fi.storage_sn = sk.storage_sn)
+        WHERE goods_count != 0
+        <include refid="queryCond" />
+    </select>
+
+</mapper> 

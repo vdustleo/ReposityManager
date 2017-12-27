@@ -1,0 +1,530 @@
+/*
+ * css reset partition
+*/
+.bold {
+    font-weight: bold;
+}
+
+.red {
+    color: red;
+}
+
+.hide {
+    display: none;
+}
+
+.cboth {
+    clear: both;
+}
+
+.tright {
+    text-align: right;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    color: #000;
+    font-family: Tahoma, Verdana, "宋体", serif;
+    font-size: 12px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/** common define **/
+.w100 {
+	width:100px;
+}
+
+.w150 {
+    width:150px;
+}
+
+.w250 {
+    width:250px;
+}
+.w350{
+	width:350px;
+}
+
+/**
+* jqgrid修复
+*
+**/
+.ui-jqgrid .ui-jqgrid-htable th div {
+    height: 25px;
+    line-height: 25px;
+}
+
+.ui-jqgrid .ui-jqgrid-view {
+    font-size: 12px;
+}
+
+.ui-widget {
+    font-family: TTahoma, Verdana, "宋体", serif;
+}
+
+/* 修复jqgrid 标题栏multiselect框的位置 */
+.ui-th-column input {
+    position: relative;
+    top: 8px;
+    left: 1px;
+}
+
+/** 
+*   布局居中 
+**/
+body {
+    text-align: center;
+}
+
+.wrapper {
+    width: 1190px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+caption, th {
+    text-align: left;
+}
+
+#data_area {
+    margin: 0;
+    width: 100%;
+}
+
+#data_area_sub {
+    display: none;
+    margin: 0;
+    width: 100%;
+}
+
+/* 
+** 实现CSS菜单
+**/
+a {
+    color: black;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+div.menu {
+    background: #eee;
+}
+
+ul.menu > li:first-child {
+    margin-left: 40px;
+}
+
+ul.menu, ul.menu ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul.menu li {
+    width: 80px;
+}
+
+ul.menu li ul {
+    width: 80px;
+    position: absolute;
+    left: -999em;
+}
+
+.menu li:hover ul {
+    left: auto;
+    width: 80px;
+    background-color: #fff;
+    z-index: 999;
+    border-top: 1px solid grey;
+}
+
+.menu li:hover {
+    background-color: #fff;
+}
+
+.menu > li {
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+#navi {
+    margin-left: 10px;
+    height: 20px;
+    line-height: 20px;
+}
+
+#navi li {
+    display: inline-block;
+}
+
+.banner {
+    font-family: "宋体", serif;
+    font-size: 20px;
+    font-weight: bold;
+    height: 30px;
+    margin: 5px 0 5px 20px;
+}
+
+.banner-hr {
+    color: #c77405;
+    height: 3px;
+    background-color: #c77405;
+}
+
+.system {
+    float: right;
+    line-height: 30px;
+}
+
+.foot-info {
+    background: #FBFBFB;
+    height: 60px;
+    line-height: 25px;
+    text-align: right;
+}
+
+form td {
+    height: 30px;
+}
+
+button {
+    height: 25px;
+    width: 80px;
+    cursor: pointer;
+}
+
+input[type="text"].field_value, input[type="password"].field_value, input.field_value {
+    width: 160px;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 5px;
+}
+
+select.field_value, .field_value > option {
+    width: 164px;
+    height: 24px;
+    line-height: 24px;
+    margin-left: 5px;
+}
+
+.login-info {
+    background: #FBFBFB;
+    height: 30px;
+    line-height: 30px;
+    text-align: left;
+}
+
+/***
+** login.jsp
+***/
+.login_info {
+    width: 490px;
+    margin: 200px auto 0 auto;
+}
+
+.login_info div {
+    margin: 0 auto;
+    text-align: center;
+    vertical-align: top;
+    width: 490px;
+    background: #ffe45c;
+    font-size: 150%;
+    font-weight: bold;
+    height: 270px;
+    line-height: 40px;
+}
+
+.field_name {
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    text-align: right;
+    float: right;
+    padding-right: 10px; 
+    cursor: pointer;
+}
+
+.field_value_bigger {
+    width: 400px;
+}
+
+/***
+** form design
+*/
+.form {
+    background: #fdf5ce;
+}
+
+.form table {
+    margin: 0 auto;
+    text-align: center;
+    width: 300px;
+    background: #fdf5ce;
+}
+
+.form td {
+    min-width: 150px;
+    text-align: left;
+}
+
+.form div {
+    margin: 0 auto;
+    text-align: center;
+    vertical-align: middle;
+    width: 300px;
+    background: #fdf5ce;
+}
+
+/** 实拨指标详情处理 **/
+#pay_index_table td{
+	 height: 22px;
+}
+
+.detail_info {
+    background: #fdf5ce;
+}
+
+.detail_info table {
+    margin: 0 auto;
+    text-align: center;
+    width: 400px;
+    background: #fdf5ce;
+}
+
+.detail_info td {
+    min-width: 200px;
+    text-align: left;
+}
+
+.detail_info div {
+    margin: 0 auto;
+    text-align: center;
+    vertical-align: middle;
+    width: 400px;
+    background: #fdf5ce;
+}
+
+/**
+** 表格中的操作链接
+**/
+.operation {
+    margin: 0 5px;
+    color: blue;
+}
+
+.error {
+    color: red;
+    display: block;
+    margin-left: 5px;
+}
+
+.error_border {
+    border: solid 1px red;
+}
+
+.lh30 {
+    line-height: 30px;
+}
+
+.func_title {
+    padding-left: 10px;
+    text-align: left;
+    vertical-align: middle;
+    line-height: 25px;
+    height: 25px;
+    background: #ffe45c;
+    color: #363636;
+}
+
+/**
+* 操作按钮的风格
+*/
+.oper_btn {
+    margin: 5px 10px;
+    height: 25px;
+    width: 100px;
+}
+
+.oper_btn_biger {
+    margin: 5px 10px;
+    height: 25px;
+    width: 150px;
+}
+
+/**
+* 修复搜索栏上表格过宽的问题
+**/
+.search_index_form td {
+    min-width: 80px;
+    text-align: left;
+}
+
+/**
+* 搜索部分样式定义
+*/
+.search {
+    background: #fdf5ce;
+}
+
+.search_form {
+    float: right;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    width: 350px;
+    background: #fdf5ce;
+}
+
+/**导入文件样式定义**/
+.import {
+    line-height: 50px;
+    height: 50px;
+    width: 1190px;
+    background: #fdf5ce;
+}
+
+.import_form {
+    position: relative;
+    width: 1000px
+}
+
+.import_form input {
+    vertical-align: middle;
+    margin: 13px 0 0 5px;
+    padding: 0;
+}
+
+.txt_import {
+    height: 22px;
+    width: 300px;
+}
+
+.btn_import {
+    height: 24px;
+    width: 80px;
+}
+
+.file_input {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    height: 24px;
+    filter: alpha(opacity:0);
+    opacity: 0;
+    width: 385px
+}
+
+.import_error {
+    position: absolute;
+    top: 10px;
+    left: 485px;
+}
+
+.pay_table {
+    display: none;
+    position: relative;
+    top: -370px;
+    left: 680px;
+    width: 0;
+    height: 0;
+    overflow: visible;
+}
+
+#history_cell1, #history_cell2 {
+    text-align: right;
+}
+
+/**
+ 添加提示信息
+*/
+.notify_info{
+	color: green;
+	font-size: 14px;
+}
+.error_info, .error_submit{
+	margin-left: 5px;
+    color: red;
+}
+
+/*金额额统计信息 */
+.statistic_info {
+    padding-right: 10px;
+    text-align: right;
+    vertical-align: middle;
+    line-height: 25px;
+    height: 25px;
+    background: #eee;
+    color: #363636;
+    font-weight: bold;
+}
+.statistic_info span {
+	margin-right: 10px;
+}
+
+.navi_button {
+	width: 150px;
+	height: 70px;
+}
+
+/* 定制处理出库的，库物数量的框长度 */
+#goods_count {
+	width: 40px;
+}
+
+#storage_sn {
+	width: 80px;
+}
+
+/* 定制的license过期提示 */
+#overdue {
+	font-size: 28px;
+	text-align: center;
+	color: #FF0000;
+	height: 150px;
+	line-height: 150px;
+}
+
+/* 对话框详细信息 */
+.dialog-info{
+	text-align: left;
+}
+
+.app-qr-code{
+	text-align:center;
+	margin: 10px 10%;
+}
+
+p.app-config{
+	font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+}
+p.app-config a{
+	text-decoration: underline;
+	color: #00F;
+}

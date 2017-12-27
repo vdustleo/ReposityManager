@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <constant name="struts.multipart.maxSize" value="10701096" />
+    <constant name="struts.multipart.saveDir " value="d:/tmp" />
+    <constant name="struts.objectFactory" value="spring" />
+
+    <package name="default" namespace="/" extends="struts-default, json-default">
+
+        <!--定义全局拦截器 -->
+        <interceptors>
+            <interceptor name="login" class="com.jeztech.repomanager.interceptor.LoginInterceptor"></interceptor>
+            <interceptor name="trim" class="com.jeztech.repomanager.interceptor.TrimInterceptor"></interceptor>
+            <interceptor-stack name="mystack">
+                <interceptor-ref name="trim"></interceptor-ref>
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="login" />
+            </interceptor-stack>
+        </interceptors>
+
+        <default-action-ref name="index" />
+
+        <!-- 定义全局跳转 -->
+        <global-results>
+            <result name="login" type="redirect">preLogin</result>
+            <result name="overdue" type="redirect">overdue</result>
+        </global-results>
+
+        <action name="preLogin">
+            <result>/login.jsp</result>
+        </action>
+
+        <action name="overdue">
+            <result>/overdue.jsp</result>
+        </action>
+
+        <action name="index">
+            <result>/index.jsp</result>
+            <interceptor-ref name="mystack" />
+        </action>
+
+        <action name="loginCheck" class="com.jeztech.repomanager.action.LoginAction" method="loginCheck">
+            <result type="json" />
+        </action>
+
+
+        <action name="loginTo" class="com.jeztech.repomanager.action.LoginAction" method="login">
+            <result name="login" type="redirect">preLogin</result>
+            <result name="success" type="redirect">index</result>
+        </action>
+
+
+        <action name="loginOut" class="com.jeztech.repomanager.action.LoginAction" method="loginOut">
+            <result name="login" type="redirect">preLogin</result>
+        </action>
+
+        <action name="accountModify" class="com.jeztech.repomanager.action.LoginAction" method="accountModify">
+            <result type="json" />
+        </action>
+
+
+        <!-- 文件下载通用 -->
+        <action name="download" class="com.jeztech.repomanager.action.DownloadAction">
+            <result type="stream">
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
+
+        <!-- 文件上传通用 -->
+        <action name="uploadFile" class="com.jeztech.repomanager.action.UploadFileAction" method="execute">
+            <!-- 动态设置savePath的属性值 -->
+            <param name="savePath">/upload_file</param>
+            <result type="json" name="success">
+                <param name="contentType">text/html</param>
+            </result>
+            <interceptor-ref name="fileUpload">
+                <!-- 文件过滤 <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg</param> -->
+                <!-- 文件大小, 以字节为单位 -->
+                <param name="maximumSize">10025956</param>
+            </interceptor-ref>
+            <interceptor-ref name="mystack" />
+        </action>
+
+    </package>
+
+    <include file="struts-*" />
+
+</struts>

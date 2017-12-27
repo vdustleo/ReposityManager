@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.CommonDataDao">
+
+    <select id="queryAllAppleType" parameterType="map" resultType="HashMap">
+    <![CDATA[ 
+        SELECT 
+            name as "name",
+            value as "value"
+         FROM dic_apple_type
+        ]]>
+    </select>
+
+    <select id="queryAllAppleSize" parameterType="map" resultType="HashMap">
+    <![CDATA[ 
+        SELECT 
+            name as "name",
+            value as "value"
+         FROM dic_apple_size
+        ]]>
+    </select>
+
+    <select id="listRepoInfo" parameterType="map" resultType="HashMap">
+    <![CDATA[ 
+        SELECT 
+            repo_code as "name",
+            repo_code as "value"
+         FROM tbl_reposity_info
+        ]]>
+    </select>
+
+</mapper> 

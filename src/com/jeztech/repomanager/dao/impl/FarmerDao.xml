@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.FarmerDao">
+
+    <insert id="addItem" parameterType="FarmerInfo">
+    <![CDATA[ 
+       INSERT INTO 
+        tbl_farmer_info (storage_sn, farmer_name, farmer_tel, unit_price) 
+        VALUES (#{storageSn}, #{farmerName}, #{farmerTel}, #{unitPrice})
+    ]]>
+    </insert>
+
+    <delete id="deleteItem" parameterType="FarmerInfo">
+    <![CDATA[ 
+        UPDATE tbl_farmer_info
+        SET status = 0
+        WHERE storage_sn = #{storageSn}
+    ]]>
+    </delete>
+
+    <update id="modifyItem" parameterType="FarmerInfo">
+    <![CDATA[ 
+         UPDATE tbl_farmer_info
+         SET             
+            farmer_name = #{farmerName},
+            farmer_tel = #{farmerTel}, 
+            unit_price = #{unitPrice},  
+         WHERE storage_sn = #{storageSn}
+    ]]>
+    </update>
+
+    <select id="getAllItemCount" parameterType="FarmerInfo" resultType="int">
+        SELECT count(1)
+        FROM tbl_farmer_info
+        where status = 1 
+        <if test="farmerName != null and farmerName != ''">
+            AND farmer_name = #{farmerName}
+        </if>
+        <if test="storageSn != null and storageSn != ''">
+            AND storage_sn = #{storageSn}
+        </if>
+    </select>
+
+    <select id="getAllItem" parameterType="map" resultType="FarmerInfo">
+        SELECT
+            storage_sn as storageSn,
+            farmer_name as farmerName,
+            farmer_tel as farmerTel,
+            unit_price as unitPrice
+        FROM tbl_farmer_info ri
+        where status = 1 
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND storage_sn = #{cond.storageSn}
+        </if>
+        LIMIT #{start_row}, #{rows}
+    </select>
+
+    <select id="getFarmerByStorageSn" parameterType="String" resultType="FarmerInfo">
+    <![CDATA[
+         SELECT
+            storage_sn as storageSn,
+            farmer_name as farmerName,
+            farmer_tel as farmerTel,
+            unit_price as unitPrice
+        FROM tbl_farmer_info ri
+        WHERE status = 1 AND storage_sn = #{storageSn}
+    ]]>
+    </select>
+
+    <select id="getMaxStorageSn" resultType="Integer">
+    <![CDATA[
+         SELECT
+            max(storage_sn)
+        FROM tbl_farmer_info
+    ]]>
+    </select>
+    
+    <select id="getAllItemById" parameterType="String" resultType="FarmerInfo">
+    <![CDATA[
+         SELECT
+            storage_sn as storageSn,
+            farmer_name as farmerName,
+            farmer_tel as farmerTel,
+            unit_price as unitPrice
+        FROM tbl_farmer_info ri
+        WHERE status = 1 AND storage_sn LIKE CONCAT(#{storageSn},'%')
+    ]]>
+    </select>
+    
+</mapper> 

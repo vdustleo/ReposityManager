@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE configuration   
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="ReposityInfo" type="com.jeztech.repomanager.model.ReposityInfo" />
+        <typeAlias alias="StorageInfo" type="com.jeztech.repomanager.model.StorageInfo" />
+        <typeAlias alias="StorageStat" type="com.jeztech.repomanager.model.StorageStat" />
+        <typeAlias alias="PayInfo" type="com.jeztech.repomanager.model.PayInfo" />
+        <typeAlias alias="PayStat" type="com.jeztech.repomanager.model.PayStat" />
+        <typeAlias alias="FarmerInfo" type="com.jeztech.repomanager.model.FarmerInfo" />
+    </typeAliases>
+    <mappers>
+        <mapper resource="com/jeztech/repomanager/dao/impl/CommonDataDao.xml" />
+        <mapper resource="com/jeztech/repomanager/dao/impl/ReposityDao.xml" />
+        <mapper resource="com/jeztech/repomanager/dao/impl/StorageRecordDao.xml" />
+        <mapper resource="com/jeztech/repomanager/dao/impl/StorageKeepDao.xml" />
+        <mapper resource="com/jeztech/repomanager/dao/impl/PayRecordDao.xml" />
+        <mapper resource="com/jeztech/repomanager/dao/impl/PayStatDao.xml" />
+        <mapper resource="com/jeztech/repomanager/dao/impl/FarmerDao.xml" />
+    </mappers>
+</configuration> 

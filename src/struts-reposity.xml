@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="reposity" namespace="/reposity" extends="default, struts-default, json-default">
+        <default-interceptor-ref name="mystack" />
+        <global-results>
+            <result name="success" type="json" />
+        </global-results>
+        <action name="listItem" class="com.jeztech.repomanager.action.ReposityInfoAction" method="listItem" />
+        <action name="listAllItem" class="com.jeztech.repomanager.action.ReposityInfoAction" method="listAllItem" />
+        <action name="add" class="com.jeztech.repomanager.action.ReposityAction" method="add" />
+        <action name="delete" class="com.jeztech.repomanager.action.ReposityAction" method="delete" />
+        <action name="hasStorage" class="com.jeztech.repomanager.action.ReposityAction" method="hasStorage" />
+        <action name="updateRepoName" class="com.jeztech.repomanager.action.ReposityAction" method="updateRepoName" />
+        <action name="queryRepoName" class="com.jeztech.repomanager.action.ReposityAction" method="queryRepoName" />
+
+    </package>
+
+    <package name="farmer" namespace="/farmer" extends="default, struts-default, json-default">
+        <default-interceptor-ref name="mystack" />
+        <global-results>
+            <result name="success" type="json" />
+        </global-results>
+        <action name="listItem" class="com.jeztech.repomanager.action.FarmerInfoAction" method="listItem" />
+        <action name="listAllItem" class="com.jeztech.repomanager.action.FarmerInfoAction" method="listAllItem" />
+        <action name="add" class="com.jeztech.repomanager.action.FarmerAction" method="add" />
+        <action name="delete" class="com.jeztech.repomanager.action.FarmerAction" method="delete" />
+
+    </package>
+        
+    <package name="pay" namespace="/pay" extends="default, struts-default, json-default">
+        <default-interceptor-ref name="mystack" />
+        <global-results>
+            <result name="success" type="json" />
+        </global-results>
+        <action name="listItem" class="com.jeztech.repomanager.action.PayInfoAction" method="listItem" />
+        <action name="listStatItem" class="com.jeztech.repomanager.action.PayInfoAction" method="listStatItem" />
+        <action name="add" class="com.jeztech.repomanager.action.PayAction" method="add" />
+        <action name="delete" class="com.jeztech.repomanager.action.PayAction" method="delete" />
+        <action name="queryMoney" class="com.jeztech.repomanager.action.PayAction" method="queryMoney" />
+    </package>
+
+    <package name="storage" namespace="/storage" extends="default, struts-default, json-default">
+        <default-interceptor-ref name="mystack" />
+        <global-results>
+            <result name="success" type="json" />
+        </global-results>
+        <action name="listStoreItem" class="com.jeztech.repomanager.action.StorageInfoAction" method="listStoreItem" />
+        <action name="listAllStoreItem" class="com.jeztech.repomanager.action.StorageInfoAction" method="listAllStoreItem" />
+        <action name="listInItem" class="com.jeztech.repomanager.action.StorageInfoAction" method="listInItem" />
+        <action name="listOutItem" class="com.jeztech.repomanager.action.StorageInfoAction" method="listOutItem" />
+        <action name="in" class="com.jeztech.repomanager.action.StorageAction" method="in" />
+        <action name="delete" class="com.jeztech.repomanager.action.StorageAction" method="delete" />
+        <action name="out" class="com.jeztech.repomanager.action.StorageAction" method="out" />
+        <action name="batchOut" class="com.jeztech.repomanager.action.StorageAction" method="batchOut" />
+
+    </package>
+</struts>

@@ -1,0 +1,162 @@
+.tleft {
+	text-align: left;
+}
+
+.search-area-item {
+	margin: auto;
+}
+
+.field_name {
+	width: 80px;
+	height: 30px;
+	line-height: 30px;
+	font-weight: bold;
+	text-align: left;
+	display: block;
+	float: none;
+}
+
+.form td {
+	min-width: 80px;
+}
+
+td.field_value {
+	width: 150px;
+	height: 30px;
+	min-width: 150px;
+}
+
+input[type="text"].field_value {
+	width: 300px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	display: block;
+	position: relative;
+	top: 50px;
+}
+
+table {
+	font-size: 12px;
+	height: 30px;
+	line-height: 30px;
+}
+
+ul>li,p {
+	font-size: 12px;
+	text-align: left;
+	margin: 5px 0 5px 5px;
+}
+
+ul>li {
+	list-style: none;
+}
+
+/**修复页面**/
+.ui-jqgrid .ui-paging-info {
+	height: 30px;
+	margin-top: 0;
+}
+
+.ui-jqgrid .ui-pg-input {
+	height: 25px;
+}
+
+body {
+	background: #ECECEC;
+	margin-top: 0px;
+}
+
+table {
+	width: auto;
+}
+
+.s-wrapper {
+	width: 607px;
+	height: 425px;
+	margin: auto;
+}
+
+.r-wrapper {
+	width: 800px;
+	margin: 0 auto;
+}
+
+/** 查询对话框 **/
+.width-fixed {
+	width: 607px;
+}
+
+.search-header {
+	background: url("query_images/header.png") no-repeat scroll top left;
+	height: 76px;
+}
+
+.search-title {
+	background: url("query_images/title.png") no-repeat scroll top left;
+	height: 80px;
+}
+
+.search-area {
+	background: url("query_images/middle.png") no-repeat scroll 0% 0%;
+	height: 118px;
+}
+
+.search-footer {
+	background: url("query_images/footer.png") no-repeat scroll top left;
+	height: 91px;
+	vertical-align: middle;
+	line-height: 91px;
+}
+
+.search-copyright {
+	height: 60px;
+	text-align: center;
+	line-height: 60px;
+}
+.search-tel {
+	height: 20px;
+	text-align: center;
+	line-height: 5px;
+}
+
+.buttons {
+	width: 240px;
+	height: 36px;
+	margin: 0 auto;
+	padding-top: 30px;
+}
+
+.button-query {
+	background: url("query_images/button_submit.png") no-repeat scroll top
+		left;
+	height: 32px;
+	width: 106px;
+	display: block;
+	float: left;
+}
+
+.button-reset {
+	background: url("query_images/button_reset.png") no-repeat scroll top
+		left;
+	height: 32px;
+	width: 106px;
+	display: block;
+	float: left;
+	margin-left:20px;
+}
+
+.button-back {
+	background: url("query_images/button_back.png") no-repeat scroll top
+		left;
+	height: 32px;
+	width: 106px;
+}
+
+#error-info {
+	color: #FF0000;
+	font-weight: bold;
+	height: 30px;
+	margin-top: 60px;
+	text-align:center;
+}

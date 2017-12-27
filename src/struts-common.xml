@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="common" namespace="/common" extends="default, struts-default, json-default">
+        <default-interceptor-ref name="mystack" />
+        <global-results>
+            <result name="success" type="json" />
+        </global-results>
+        <!-- 取出所有的苹果类型 -->
+        <action name="listAppleType" class="com.jeztech.repomanager.action.CommonDataAction" method="listAppleType"/>
+        <!-- 取出所有的苹果尺寸  -->
+        <action name="listAppleSize" class="com.jeztech.repomanager.action.CommonDataAction" method="listAppleSize"/>
+        <!-- 取出所有的仓库信息 -->
+        <action name="listRepoInfo" class="com.jeztech.repomanager.action.CommonDataAction" method="listRepoInfo"/>
+        <!-- 取出服务器的地址信息 -->
+        <action name="serverIp" class="com.jeztech.repomanager.action.CommonDataAction" method="serverIp"/>
+    </package>
+</struts>

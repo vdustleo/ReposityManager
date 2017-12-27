@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.PayKeepDao">
+
+    <delete id="addItem" parameterType="PayInfo">
+    <![CDATA[ 
+       INSERT INTO 
+        tbl_pay_info (farmer_name, storage_sn, psn, total_price, pay_price, owe_price, pay_time) 
+        VALUES (#{farmerName}, #{storageSn}, #{psn}, #{totalPrice}, #{payPrice}, #{owePrice}, #{payTime})    
+    ]]>
+    </delete>
+
+    <sql id="queryAllItemCond">
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND storage_sn = #{cond.storageSn}
+        </if>
+    </sql>
+
+    <select id="getAllItemCount" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM tbl_pay_info pi
+        WHERE psn != 0
+        <include refid="queryAllItemCond" />
+    </select>
+
+    <select id="getAllItem" parameterType="map" resultType="PayInfo">
+        SELECT
+        farmer_name as farmerName,
+        storage_sn as storageSn,
+        total_price as totalPrice,
+        pay_price as payPrice,
+        owe_price as owePrice,
+        pay_time as payTime
+        FROM
+        tbl_pay_info pi
+        WHERE psn != 0
+        <include refid="queryAllItemCond" />
+        ORDER BY pay_time DESC
+        LIMIT #{start_row}, #{rows}
+    </select>
+
+    <select id="getAllStatItemCount" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM tbl_pay_info pi
+        WHERE CONCAT(farmer_name, storage_sn, psn) IN( 
+            SELECT CONCAT(farmer_name, storage_sn, max(psn)) FROM tbl_pay_info
+            GROUP BY farmer_name, storage_sn
+        )
+        <include refid="queryAllItemCond" />
+    </select>
+
+    <select id="getAllStatItem" parameterType="map" resultType="PayInfo">
+        SELECT
+        farmer_name as farmerName,
+        storage_sn as storageSn,
+        total_price as totalPrice,
+        pay_price as payPrice,
+        owe_price as owePrice,
+        pay_time as payTime
+        FROM
+        tbl_pay_info pi
+        WHERE CONCAT(farmer_name, storage_sn, psn) IN( 
+            SELECT CONCAT(farmer_name, storage_sn, max(psn)) FROM tbl_pay_info
+            GROUP BY farmer_name, storage_sn
+        )
+        <include refid="queryAllItemCond" />
+        ORDER BY pay_time DESC
+        LIMIT #{start_row}, #{rows}
+    </select>
+
+    <sql id="queryMoneyRefCond">
+        <if test="farmerName != null and farmerName != ''">
+            AND farmer_name = #{farmerName}
+        </if>
+        <if test="storageSn != null and storageSn != ''">
+            AND storage_sn = #{storageSn}
+        </if>
+    </sql>
+
+    <select id="queryMoney" parameterType="PayInfo" resultType="PayInfo">
+        SELECT
+        farmer_name as farmerName,
+        storage_sn as storageSn,
+        total_price as totalPrice,
+        psn as psn,
+        pay_price as payPrice,
+        owe_price as owePrice
+        FROM
+        tbl_pay_info pi
+        WHERE psn = (
+        SELECT max(psn) FROM tbl_pay_info
+        WHERE 1 = 1
+        <include refid="queryMoneyRefCond" />
+        )
+        <include refid="queryMoneyRefCond" />
+    </select>
+
+    <select id="getPayStat_h2" parameterType="map" resultType="PayStat">
+        SELECT
+        SUM(goods_count) as sumGoods,
+        SUM(CAST(pi.total_price as NUMBER)) as sumPrice,
+        SUM(CAST(pi.total_price as NUMBER)) - SUM(CAST(owe_price as NUMBER))
+        as payPrice,
+        SUM(CAST(owe_price as NUMBER)) as owePrice
+        FROM tbl_pay_info pi
+        LEFT JOIN
+        tbl_storage_info si ON(pi.farmer_name = si.farmer_name AND
+        pi.storage_sn = si.storage_sn)
+        WHERE (CONCAT(pi.farmer_name, pi.storage_sn, psn)) IN
+        ( SELECT CONCAT(farmer_name, storage_sn, max(psn)) FROM tbl_pay_info
+        GROUP BY farmer_name, storage_sn
+        )
+        AND si.status = 1
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND pi.farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND pi.storage_sn = #{cond.storageSn}
+        </if>
+        <if test="cond.repoCode != null and cond.repoCode != ''">
+            AND repo_code = #{cond.repoCode}
+        </if>
+        <if test="cond.repoSep != null and cond.repoSep != 0">
+            AND repo_sep = #{cond.repoSep}
+        </if>
+    </select>
+
+    <select id="getPayStat_mysql" parameterType="map" resultType="PayStat">
+        SELECT
+        SUM(goods_count) as sumGoods,
+        SUM(pi.total_price) as sumPrice,
+        SUM(pi.total_price) - SUM(owe_price) as payPrice,
+        SUM(owe_price) as owePrice
+        FROM
+        tbl_pay_info pi
+        LEFT JOIN
+        tbl_storage_info si ON(pi.farmer_name = si.farmer_name AND pi.storage_sn = si.storage_sn)
+        WHERE (CONCAT(pi.farmer_name,
+        pi.storage_sn, psn)) IN
+        ( SELECT CONCAT(farmer_name, storage_sn, max(psn)) FROM tbl_pay_info
+        GROUP BY farmer_name, storage_sn
+        )
+        AND si.status = 1
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND pi.farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND pi.storage_sn = #{cond.storageSn}
+        </if>
+        <if test="cond.repoCode != null and cond.repoCode != ''">
+            AND repo_code = #{cond.repoCode}
+        </if>
+        <if test="cond.repoSep != null and cond.repoSep != 0">
+            AND repo_sep = #{cond.repoSep}
+        </if>
+    </select>
+
+</mapper> 

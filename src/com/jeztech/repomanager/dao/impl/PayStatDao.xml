@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.PayStatDao">
+
+    <insert id="addItem" parameterType="PayInfo">
+    <![CDATA[ 
+       INSERT INTO 
+        tbl_pay_stat (storage_sn, total_price, pay_price, owe_price, pay_time) 
+        VALUES (#{storageSn}, #{totalPrice}, #{payPrice}, #{owePrice}, #{payTime})    
+    ]]>
+    </insert>
+
+    <update id="modifyItem" parameterType="PayInfo">
+         UPDATE tbl_pay_stat
+         SET             
+            total_price = #{totalPrice},
+            pay_price = #{payPrice},
+            owe_price = #{owePrice},
+            pay_time = #{payTime}
+         WHERE storage_sn = #{storageSn}   
+    </update>     
+
+    <sql id="queryAllItemCond">
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND ps.storage_sn = #{cond.storageSn}
+        </if>
+    </sql>
+
+    <select id="getAllItemCount" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM tbl_pay_stat ps
+        <include refid="queryAllItemCond" />
+    </select>
+
+    <select id="getAllItem" parameterType="map" resultType="PayInfo">
+        SELECT
+        farmer_name as farmerName,
+        ps.storage_sn as storageSn,
+        total_price as totalPrice,
+        pay_price as payPrice,
+        owe_price as owePrice,
+        pay_time as payTime
+        FROM
+        tbl_pay_stat ps
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = ps.storage_sn)
+        WHERE 1 = 1
+        <include refid="queryAllItemCond" />
+        ORDER BY pay_time DESC
+        LIMIT #{start_row}, #{rows}
+    </select>
+
+    <select id="queryMoney" parameterType="PayInfo" resultType="PayInfo">
+        SELECT
+        farmer_name as farmerName,
+        ps.storage_sn as storageSn,
+        total_price as totalPrice,
+        pay_price as payPrice,
+        owe_price as owePrice
+        FROM
+        tbl_pay_stat ps
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = ps.storage_sn)
+        WHERE ps.storage_sn = #{storageSn} 
+    </select>
+    
+    <select id="getPayStat_mysql" parameterType="map" resultType="PayStat">
+        SELECT
+        SUM(ps.total_price) as sumPrice,
+        SUM(ps.total_price) - SUM(owe_price) as payPrice,
+        SUM(owe_price) as owePrice
+        FROM
+        tbl_pay_stat ps
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = ps.storage_sn)
+        WHERE 1 = 1
+        <include refid="queryAllItemCond" />    
+    </select>
+
+</mapper> 

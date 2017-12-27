@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.StorageRecordDao">
+
+    <insert id="addItem" parameterType="StorageInfo" useGeneratedKeys="true" keyProperty="sid">
+    <![CDATA[ 
+        INSERT INTO 
+        tbl_storage_record (storage_sn, apple_type, apple_size, repo_code, repo_sep,
+        goods_count, total_price, operate_time, type) 
+        VALUES ( #{storageSn}, #{appleType}, #{appleSize}, #{repoCode}, #{repoSep},
+        #{goodsCount}, #{totalPrice}, #{operateTime}, #{type}
+        )
+    ]]>
+    </insert>
+
+    <update id="deleteItem" parameterType="StorageInfo">
+    <![CDATA[ 
+        UPDATE tbl_storage_record
+        SET
+           status = 0
+        WHERE id = #{sid}
+    ]]>
+    </update>
+    
+    <sql id="queryCond">
+        <if test="cond.farmerName != null and cond.farmerName != ''">
+            AND farmer_name = #{cond.farmerName}
+        </if>
+        <if test="cond.storageSn != null and cond.storageSn != ''">
+            AND sr.storage_sn = #{cond.storageSn}
+        </if>
+        <if test="cond.appleType != null and cond.appleType != ''">
+            AND apple_type = #{cond.appleType}
+        </if>
+        <if test="cond.appleSize != null and cond.appleSize != ''">
+            AND apple_size = #{cond.appleSize}
+        </if>        
+        <if test="cond.repoCode != null and cond.repoCode != ''">
+            AND repo_code = #{cond.repoCode}
+        </if>
+        <if test="cond.repoSep != null and cond.repoSep != 0">
+            AND repo_sep = #{cond.repoSep}
+        </if>
+        <if test="status != null and status.size > 0">
+            AND type IN
+            <foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+    <select id="getAllItemCount" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM tbl_storage_record sr
+        LEFT JOIN dic_apple_size aps ON(aps.name = sr.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sr.apple_type)        
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = sr.storage_sn)        
+        WHERE 1 = 1
+        <include refid="queryCond"></include>
+
+    </select>
+
+    <select id="getAllItem" parameterType="map" resultType="StorageInfo">
+        SELECT
+            id as sid,
+            sr.storage_sn as storageSn,
+            apt.value as appleType,
+            aps.value as appleSize,
+            repo_code as repoCode,
+            goods_count as
+            goodsCount,
+            unit_price as unitPrice,
+            farmer_name as farmerName,
+            total_price as totalPrice,
+            operate_time as operateTime,
+            repo_sep as repoSep
+        FROM
+        tbl_storage_record sr
+        LEFT JOIN dic_apple_size aps ON(aps.name = sr.apple_size)
+        LEFT JOIN dic_apple_type apt ON(apt.name = sr.apple_type)
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = sr.storage_sn)
+        WHERE 1 = 1
+        <include refid="queryCond"></include>
+        ORDER BY operate_time DESC
+        LIMIT #{start_row}, #{rows}
+    </select>
+
+    <select id="getStorageStat" parameterType="map" resultType="StorageStat">
+        SELECT 
+            count(1) as "sumRecord",
+            SUM(goods_count) as "sumGoods"
+        FROM tbl_storage_record sr
+        LEFT JOIN tbl_farmer_info fi ON(fi.storage_sn = sr.storage_sn)
+        WHERE 1 = 1
+        <include refid="queryCond"></include>
+    </select>    
+
+</mapper> 

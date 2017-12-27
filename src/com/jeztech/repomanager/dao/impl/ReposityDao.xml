@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jeztech.repomanager.dao.ReposityDao">
+
+    <insert id="addItem" parameterType="ReposityInfo">
+    <![CDATA[ 
+       INSERT INTO 
+        tbl_reposity_info (repo_code, sep_num, admin) 
+        VALUES (#{repoCode}, #{sepNum}, #{admin})
+    ]]>
+    </insert>
+
+    <delete id="deleteItem" parameterType="ReposityInfo">
+    <![CDATA[ 
+        DELETE FROM tbl_reposity_info
+        WHERE repo_code = #{repoCode}
+    ]]>
+    </delete>
+
+    <update id="modifyItem" parameterType="ReposityInfo">
+    <![CDATA[ 
+         UPDATE tbl_reposity_info
+         SET             
+            sep_num = #{sepNum}, 
+            admin = #{admin}
+         WHERE repo_code = #{repoCode}
+    ]]>
+    </update>
+
+    <select id="getAllItemCount" parameterType="map" resultType="int">
+    <![CDATA[
+        SELECT count(1)
+        FROM tbl_reposity_info ri
+    ]]>
+    </select>
+
+    <select id="getAllItemByCond" parameterType="map" resultType="ReposityInfo">
+    <![CDATA[
+         SELECT
+            repo_code as repoCode,
+            sep_num as sepNum,
+            admin
+        FROM tbl_reposity_info ri
+        LIMIT #{start_row}, #{rows}
+    ]]>
+    </select>
+
+    <select id="getAllItem" resultType="ReposityInfo">
+    <![CDATA[
+         SELECT
+            repo_code as repoCode,
+            sep_num as sepNum,
+            admin
+        FROM tbl_reposity_info ri
+    ]]>
+    </select>    
+
+    <select id="getReposityByCode" parameterType="String" resultType="ReposityInfo">
+    <![CDATA[
+         SELECT
+            repo_code as repoCode,
+            sep_num as sepNum,
+            admin
+        FROM tbl_reposity_info ri
+        WHERE repo_code = #{repoCode}
+    ]]>
+    </select>
+
+    <update id="updateRepoName" parameterType="ReposityInfo">
+    <![CDATA[ 
+         UPDATE tbl_sys_para
+         SET             
+            value = #{repoCode}
+         WHERE name = 'repo_name'
+    ]]>
+    </update>
+    
+    <select id="queryRepoName" resultType="ReposityInfo">
+    <![CDATA[ 
+        SELECT value as repoCode
+        FROM tbl_sys_para
+         WHERE name = 'repo_name'
+    ]]>
+    </select>
+
+</mapper> 
